@@ -35,6 +35,7 @@ sub new {
 		'0A37' => ['inventory_item_added', 'a2 v V C3 a16 V C2 a4 v a25 C v', [qw(ID amount nameID identified broken upgrade cards type_equip type fail expire unknown options favorite viewID)]],
 		'0ADD' => ['item_appeared', 'a4 V v C v2 C2 v C v', [qw(ID nameID type identified x y subx suby amount show_effect effect_type )]],
 		'01C8' => ['item_used', 'a2 V a4 v C', [qw(ID itemID actorID remaining success)]],
+		'0A7B' => ['eac_request', 'H*', [qw(eac_key)]],
 	);
 
 	$self->{packet_list}{$_} = $packets{$_} for keys %packets;
@@ -55,5 +56,7 @@ sub new {
 
 	return $self;
 }
+
+sub eac_request {}
 
 1;
