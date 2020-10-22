@@ -291,7 +291,7 @@ captcha 0
 
 # http://ro.gnjoy.in.th/
 [Thailand - tRO: Ayothaya]
-ip 49.229.28.13
+ip thro-acc3.gnjoy.in.th
 port 50001
 master_version 7
 version 24
@@ -308,7 +308,7 @@ pinCode 1
 
 # http://ro.gnjoy.in.th/
 [Thailand - tRO: Junon]
-ip 49.229.28.77
+ip thro-acc2.gnjoy.in.th
 port 50001
 master_version 7
 version 24
@@ -325,7 +325,7 @@ pinCode 1
 
 # http://ro.gnjoy.in.th/
 [Thailand - tRO: Midgard]
-ip 49.229.28.28
+ip thro-acc4.gnjoy.in.th
 port 50001
 master_version 7
 version 24
@@ -342,7 +342,7 @@ pinCode 1
 
 # http://ro.gnjoy.in.th/
 [Thailand - tRO: Yuno]
-ip 49.229.28.74
+ip thro-acc1.gnjoy.in.th
 port 50001
 master_version 7
 version 24
