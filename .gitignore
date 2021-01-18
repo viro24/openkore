@@ -58,3 +58,7 @@ tables/**/npcs.txt
 tables/**/monsters.txt
 *.xpm
 *.weight
+
+manual
+control_ok/account.txt
+strawberry-perl-5.32.0.1-32bit-portable

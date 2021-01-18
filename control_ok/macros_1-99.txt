@@ -1,0 +1,393 @@
+Extreme V1.0 :lol:
+
+Purpose:
+Create a Novice and then simply watch it become Level 99 [Insert a job here] without moving a finger!! [In my Example it's High Wizard]
+I must say that it is extremely useful for making bot armies. Before I had to level each of my bots manually which was a pain in a$$ since my bots were banned frequently.
+
+Use:
+Do not just copy paste it!!! This Macro is written for a High Rate server with a Job Changer, NPC Warp and @go command.
+Use this as a reference and make your own macro that fits your needs!
+
+Minimum Modification:
+1) NPC Locations and Talk Sequences
+2) Job you want
+3) Maps where you want to level
+4) Skills and stats you want to up
+5) Weapon configuration (Melee/Range/Spells)
+6) Levels at which you want the Macro to Trigger
+7) Jobs at which you want Macro to Trigger
+8) Your save location
+9) Desired levels
+
+Explanation of the Macro:
+
+#############Step One (1)################
+
+automacro Novice_1 { #First automacro which triggers when you are Level 1
+exclusive 1 #This automacro cannot be interrupted by other macros
+run-once 1 #This macro wont repeat again
+base == 1 #This line is a Base Level Trigger
+class Novice #This line is a Job Trigger [Better put it here if you want to get Advanced Jobs]
+
+call {
+do conf skillsAddAuto_list Basic Skill 9 #This line changes the config.txt to make bot level up "Basic Skill"
+do c @go 0 #Warps te bot where it needs to be [If you're server doesn't have that command use Kafra\Warp Npc\Whatever]
+do move 36 208 #This line moves the bot towards the Kafra to save
+do talknpc 29 207 c r0 c #This is talking with Kafra and saving
+do conf lockMap prt_fild05 #This line sets the map where you want to level\do stuff [Prepare portals beforehand]
+do conf runFromTarget 0 #This line changes the runFromTarget to 0 in config.txt
+do conf attackUseWeapon 1 #This line changes the attackUseWeapon to 1 in config.txt
+do conf attackCanSnipe 0 #This line changes the attackCanSnipe to 0 in config.txt
+do conf attackCheckLOS 0 #This line changes the attackCheckLOS to 0 in config.txt
+}
+}
+
+
+
+#############Step Two (2)################
+
+automacro Level_15_Becoming_Mage {
+priority 1 #This is macro's priority compared to other macros [Bigger the number - lesser the priority]
+exclusive 1 #This automacro cannot be interrupted by other macros
+run-once 1 #This macro wont repeat again
+base >= 15 #This line is a Base Level Trigger
+class Novice #This line is a Job Trigger [Better put it here if you want to get Advanced Jobs]
+
+call {
+do conf lockMap prontera #This line sets the map where you want to level\do stuff [Prepare portals beforehand]
+do c @go 0 #Warps the bot where it needs to be [If your server doesn't have that command use Kafra\Warp Npc\Whatever]
+do move 170 200 #Moves the bot near needed location
+do talknpc 172 198 c c c r0 r1 c r0 c #Talks to the Job Changer
+}
+}
+
+
+
+#############Step Three (3)################
+
+automacro Mage_15 {
+priority 2 #This is macro's priority compared to other macros [Bigger the number - lesser the priority]
+exclusive 1 #This automacro cannot be interrupted by other macros
+run-once 1 #This macro wont repeat again
+class Mage #This line is a Job Trigger [Better put it here if you want to get Advanced Jobs]
+
+call {
+do c @go 0 #Warps te bot where it needs to be [If your server doesn't have that command use Kafra\Warp Npc\Whatever]
+do move 167 192 #Moves the bot near needed location
+do talknpc 176 205 c r1 r7 c r0 #Manually talks to Warp NPC to get where it needs
+do conf lockMap prt_fild05 #This line sets the map where you want to level\do stuff [Prepare portals beforehand]
+}
+}
+
+
+
+
+#############Step Four (4)################
+
+automacro Level_20 {
+priority 3 #This is macro's priority compared to other macros [Bigger the number - lesser the priority]
+exclusive 1 #This automacro cannot be interrupted by other macros
+run-once 1 #This macro wont repeat again
+base >= 20 #This line is a Base Level Trigger
+class Mage #This line is a Job Trigger [Better put it here if you want to get Advanced Jobs]
+
+call {
+do skills add 19 #Level ups Fire Bolt [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 19 #Level ups Fire Bolt [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 19 #Level ups Fire Bolt [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 19 #Level ups Fire Bolt [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 19 #Level ups Fire Bolt [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do c @go 0 #Warps the bot where it needs to be [If your server doesn't have that command use Kafra\Warp Npc\Whatever]
+do conf lockMap prt_maze02 #This line sets the map where you want to level\do stuff [Prepare portals beforehand]
+do conf attackUseWeapon 0 #This line changes the attackUseWeapon to 0 in config.txt
+do conf attackCanSnipe 1 #This line changes the attackCanSnipe to 1 in config.txt
+do conf attackCheckLOS 1 #This line changes the attackCheckLOS to 1 in config.txt
+}
+}
+
+
+
+
+#############Step Five (5)################
+
+automacro Level_50 {
+priority 4 #This is macro's priority compared to other macros [Bigger the number - lesser the priority]
+exclusive 1 #This automacro cannot be interrupted by other macros
+run-once 1 #This macro wont repeat again
+base >= 50 #This line is a Base Level Trigger
+class Mage #This line is a Job Trigger [Better put it here if you want to get Advanced Jobs]
+
+call {
+do skills add 19 #Level ups Fire Bolt [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 19 #Level ups Fire Bolt [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 19 #Level ups Fire Bolt [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 19 #Level ups Fire Bolt [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 19 #Level ups Fire Bolt [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 19 #Level ups Fire Bolt [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do c @go 19 #Warps the bot where it needs to be [If your server doesn't have that command use Kafra\Warp Npc\Whatever]
+do conf lockMap ein_fild04 #This line sets the map where you want to level\do stuff [Prepare portals beforehand]
+do conf runFromTarget 1 #This line changes the runFromTarget to 0 in config.txt
+}
+}
+
+
+
+
+#############Step Six (6)################
+
+automacro Level_82 {
+priority 5 #This is macro's priority compared to other macros [Bigger the number - lesser the priority]
+exclusive 1 #This automacro cannot be interrupted by other macros
+run-once 1 #This macro wont repeat again
+base >= 82 #This line is a Base Level Trigger
+class Mage #This line is a Job Trigger [Better put it here if you want to get Advanced Jobs]
+
+call {
+do c @go 0 #Warps the bot where it needs to be [If your server doesn't have that command use Kafra\Warp Npc\Whatever]
+do conf lockMap prontera #This line sets the map where you want to level\do stuff [Prepare portals beforehand]
+do move 172 197 #Moves the bot near needed location
+do talknpc 172 198 c c c r0 r0 c r0 c #Talks to the Job Changer
+}
+}
+
+
+
+
+#############Step Seven (7)################
+
+automacro Wizard_82 {
+priority 6 #This is macro's priority compared to other macros [Bigger the number - lesser the priority]
+exclusive 1 #This automacro cannot be interrupted by other macros
+run-once 1 #This macro wont repeat again
+class Wizard #This line is a Job Trigger [Better put it here if you want to get Advanced Jobs]
+
+call {
+do c @go 19 #Warps the bot where it needs to be [If yore server doesn't have that command use Kafra\Warp Npc\Whatever]
+do conf lockMap ein_fild04 #This line sets the map where you want to level\do stuff [Prepare portals beforehand]
+}
+}
+
+
+
+
+#############Step Eight (8)################
+
+automacro Level_99 {
+priority 7 #This is macro's priority compared to other macros [Bigger the number - lesser the priority]
+exclusive 1 #This automacro cannot be interrupted by other macros
+run-once 1 #This macro wont repeat again
+base >= 99 #This line is a Base Level Trigger
+class Wizard #This line is a Job Trigger [Better put it here if you want to get Advanced Jobs]
+
+call {
+do c @go 0 #Warps the bot where it needs to be [If yore server doesn't have that command use Kafra\Warp Npc\Whatever]
+do conf lockMap prontera #This line sets the map where you want to level\do stuff [Prepare portals beforehand]
+do move 172 197 #Moves the bot near needed location
+do talknpc 172 198 c c c r0 c r0 c #Talks to the Job Changer
+}
+}
+
+
+
+
+#############Step Nine (9)################
+
+automacro High_Novice_1 {
+priority 8 #This is macro's priority compared to other macros [Bigger the number - lesser the priority]
+exclusive 1 #This automacro cannot be interrupted by other macros
+run-once 1 #This macro wont repeat again
+class High Novice #This line is a Job Trigger [Better put it here if you want to get Advanced Jobs]
+base == 1 #This line is a Base Level Trigger
+
+call {
+do c @go 0 #Warps the bot where it needs to be [If your server doesn't have that command use Kafra\Warp Npc\Whatever]
+do move 167 192 #Moves the bot near needed location
+do talknpc 176 205 c r1 r7 c r0 #Manually talks to Warp NPC to get where it needs
+do conf lockMap prt_fild05 #This line sets the map where you want to level\do stuff [Prepare portals beforehand]
+do conf attackUseWeapon 1 #This line changes the attackUseWeapon to 1 in config.txt
+do conf attackCanSnipe 0 #This line changes the attackCanSnipe to 0 in config.txt
+do conf runFromTarget 0 #This line changes the runFromTarget to 0 in config.txt
+do conf attackCheckLOS 0 #This line changes the attackCheckLOS to 0 in config.txt
+}
+}
+
+
+
+
+#############Step Ten (10)################
+
+automacro Level_15_High {
+priority 9 #This is macro's priority compared to other macros [Bigger the number - lesser the priority]
+exclusive 1 #This automacro cannot be interrupted by other macros
+run-once 1 #This macro wont repeat again
+base >= 15 #This line is a Base Level Trigger
+class High Novice #This line is a Job Trigger [Better put it here if you want to get Advanced Jobs]
+
+call {
+do skills add 1 #Level ups Basic Skill [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 1 #Level ups Basic Skill [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 1 #Level ups Basic Skill [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 1 #Level ups Basic Skill [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 1 #Level ups Basic Skill [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 1 #Level ups Basic Skill [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 1 #Level ups Basic Skill [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 1 #Level ups Basic Skill [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 1 #Level ups Basic Skill [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do conf lockMap prontera #This line sets the map where you want to level\do stuff [Prepare portals beforehand]
+do c @go 0 #Warps the bot where it needs to be [If yore server doesn't have that command use Kafra\Warp Npc\Whatever]
+do move 172 196 #Moves the bot near needed location
+do talknpc 172 198 c c c r0 c #Talks to the Job Changer
+}
+}
+
+
+
+
+#############Step Eleven (11)################
+
+automacro High_Mage_15 {
+priority 10 #This is macro's priority compared to other macros [Bigger the number - lesser the priority]
+exclusive 1 #This automacro cannot be interrupter by other macros
+run-once 1 #This macro wont repeat again
+class High Magician #This line is a Job Trigger [Better put it here if you want to get Advanced Jobs]
+
+call {
+do c @go 0 #Warps the bot where it needs to be [If yore server doesn't have that command use Kafra\Warp Npc\Whatever]
+do move 167 192 #Moves the bot near needed location
+do talknpc 176 205 c r1 r7 c r0 #Manually talks to Warp NPC to get where it needs
+do conf lockMap prt_fild05 #This line sets the map where you want to level\do stuff [Prepare portals beforehand]
+}
+}
+
+
+
+
+#############Step Twelve (12)################
+
+automacro Level_20_High {
+priority 11 #This is macro's priority compared to other macros [Bigger the number - lesser the priority]
+exclusive 1 #This automacro cannot be interrupted by other macros
+run-once 1 #This macro wont repeat again
+class High Magician #This line is a Job Trigger [Better put it here if you want to get Advanced Jobs]
+base >= 20 #This line is a Base Level Trigger
+
+call {
+do skills add 19 #Level ups Fire Bolt [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 19 #Level ups Fire Bolt [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 19 #Level ups Fire Bolt [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 19 #Level ups Fire Bolt [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 19 #Level ups Fire Bolt [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 19 #Level ups Fire Bolt [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 19 #Level ups Fire Bolt [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do c @go 0 #Warps the bot where it needs to be [If yore server doesn't have that command use Kafra\Warp Npc\Whatever]
+do conf lockMap prt_maze02 #This line sets the map where you want to level\do stuff [Prepare portals beforehand]
+do conf attackUseWeapon 0 #This line changes the attackUseWeapon to 0 in config.txt
+do conf attackCanSnipe 1 #This line changes the attackCanSnipe to 1 in config.txt
+do conf attackCheckLOS 1 #This line changes the attackCheckLOS to 1 in config.txt
+}
+}
+
+
+
+
+#############Step Thirteen (13)################
+
+automacro Level_50_High {
+priority 12 #This is macro's priority compared to other macros [Bigger the number - lesser the priority]
+exclusive 1 #This automacro cannot be interrupted by other macros
+run-once 1 #This macro wont repeat again
+class High Magician #This line is a Job Trigger [Better put it here if you want to get Advanced Jobs]
+base >= 50 #This line is a Base Level Trigger
+
+call {
+do skills add 19 #Level ups Fire Bolt [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 19 #Level ups Fire Bolt [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 19 #Level ups Fire Bolt [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 19 #Level ups Fire Bolt [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do skills add 19 #Level ups Fire Bolt [Sometimes skillsAddAuto_List glitches, so I prefer doing it manually]
+do c @go 19 #Warps the bot where it needs to be [If yore server doesn't have that command use Kafra\Warp Npc\Whatever]
+do conf lockMap ein_fild04 #This line sets the map where you want to level\do stuff [Prepare portals beforehand]
+do conf runFromTarget 1 #This line changes the runFromTarget to 1 in config.txt
+}
+}
+
+
+
+
+#############Step Fourteen (14)################
+
+automacro Level_82_High {
+priority 13 #This is macro's priority compared to other macros [Bigger the number - lesser the priority]
+exclusive 1 #This automacro cannot be interupted by other macros
+run-once 1 #This macro wont repeat again
+class High Magician #This line is a Job Trigger [Better put it here if you want to get Advanced Jobs]
+base >= 82 #This line is a Base Level Trigger
+
+call {
+do c @go 0 #Warps the bot where it needs to be [If yore server doesn't have that command use Kafra\Warp Npc\Whatever]
+do conf lockMap prontera #This line sets the map where you want to level\do stuff [Prepare portals beforehand]
+do move 172 197 #Moves the bot near needed location
+do talknpc 172 198 c c c r0 c r0 c #Talks to the Job Changer
+}
+}
+
+
+
+
+#############Step Fiveteen (15)################
+
+automacro High_Wizard_82 {
+priority 14 #This is macro's priority compared to other macros [Bigger the number - lesser the priority]
+exclusive 1 #This automacro cannot be interupted by other macros
+run-once 1 #This macro wont repeat again
+base >= 82 #This line is a Base Level Trigger
+class High Wizard #This line is a Job Trigger [Better put it here if you want to get Advanced Jobs]
+
+call {
+do c @go 19 #Warps the bot where it needs to be [If yore server doesn't have that command use Kafra\Warp Npc\Whatever]
+do conf lockMap ein_fild04 #This line sets the map where you want to level\do stuff [Prepare portals beforehand]
+}
+}
+
+
+
+
+#############Step Sixteen (16)################
+
+automacro Level_99_High {
+priority 15 #This is macro's priority compared to other macros [Bigger the number - lesser the priority]
+exclusive 1 #This automacro cannot be interupted by other macros
+run-once 1 #This macro wont repeat again
+base >= 99 #This line is a Base Level Trigger
+class High Wizard #This line is a Job Trigger [Better put it here if you want to get Advanced Jobs]
+
+call {
+do c @go 0 #Warps the bot where it needs to be [If yore server doesn't have that command use Kafra\Warp Npc\Whatever]
+do quit #Exits the bot when level 99 is reached [Adjust to your own needs]
+}
+}
+
+
+
+####### Precatious For Geographer Map ########
+
+automacro unstuck {
+timeout 500 #Executes macro every 500 seconds
+base >= 50 #Triggered when Base Level is more that 50
+location not prontera #Triggered when the bot is not in Prontera
+
+call {
+do c @go 19 #Waprs the bot to Einbroch near the lockMap
+}
+}
+
+######## Stat_Add Unstuck ######
+
+automacro stat_add {
+timeout 60 #Executes every 60 seconds
+base > 1 #Triggered when Base Level is more that 1
+
+call {
+do stat_add int #Adds one stat point to Int [I made this little Automacro because sometimes bot's auto stat add is stuck]
+}
+}

@@ -352,6 +352,23 @@ charBlockSize 147
 addTableFolders pserver/RMS;kRO/RagexeRE_2014_10_22b;translated/kRO_english;kRO
 clientHash 82d12c914f5ad48fd96fcf7ef4cc492d
 pinCode 1
+       
+# https://ebilro.net/
+[EbilRO]
+ip 89.163.132.26
+port 6900
+private 0
+#sendCryptKeys 0x00000000, 0x00000000, 0x00000000
+master_version 1
+version 55
+#version 30
+storageEncryptKey 0x00000025,0x0000019F,0x000001EA,0x00000025,0x00000089,0x000001F4,0x0000023F,0x00000025
+recvpackets recvpackets.txt
+serverType kRO_RagexeRE_2018_06_21a
+serverEncoding Western
+charBlockSize 155
+pinCode 1
+addTableFolders kRO/RagexeRE_2018_06_21a;translated/kRO_english;kRO;ebilRO
 
 ####################
 # Dead

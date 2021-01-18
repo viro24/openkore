@@ -1,0 +1,620 @@
+
+macro logAmounts {
+$invHerbs = @invamount (White Herb); $invEB = @invamount (Empty Bottle); $invWP = @invamount (White Potion);
+$cHerbs = @cartamount (White Herb); $cEB = @cartamount (Empty Bottle); $cWP = @cartamount (White Potion);
+#log $.time: Inventar -- Cart: White Herbs / Empty Bottle / White Potion
+#log $.time: $invHerbs / $invEB / $invWP -- $cHerbs / $cEB / $cWP
+log $.hour:$.minute:$.second: Inv: $invHerbs WH / $invEB EB / $invWP WP
+log $.hour:$.minute:$.second: Cart: $cHerbs WH / $cEB EB / $cWP WP
+}
+
+macro checkBuySteps {
+$weightWP = 15; $weightEB = 2; $weightWH = 7; $weightAvailable = @eval($.maxweight-$.weight);
+
+    switch ($weightAvailable) {
+        case (>= 8000) {
+		$amountHerbs = @eval(1000-@invamount (White Herb)); $amountBottles = @eval(500-@invamount (Empty Bottle));
+		do talknpc 213 121 b b2,$amountHerbs b7,$amountBottles
+		do talk @npc(213 121) cancel
+        }
+		case (>= 7000) {
+		if ($cHerbs != 1000) {
+		$amountHerbs = @eval(1000-@invamount (White Herb)); $amountBottles = @eval(500-@invamount (Empty Bottle));
+		do talknpc 213 121 b b2,$amountHerbs
+		do talk @npc(213 121) cancel
+		do cart add White Herb 1000
+		pause 1
+		do talknpc 213 121 b b7,$amountBottles
+		do talk @npc(213 121) cancel
+		do cart add Empty Bottle 500
+		}
+		$amountHerbs = @eval(850-@invamount (White Herb)); $amountBottles = @eval(425-@invamount (Empty Bottle));
+		do talknpc 213 121 b b2,$amountHerbs b7,$amountBottles
+		do talk @npc(213 121) cancel
+        }
+        else {
+			log nix
+        }
+    }
+}
+
+macro start-potions {
+$zeitAnfang = $.time; $zenyAnfang = $.zeny; $datumStart = $.hour:$.minute:$.second;
+call logAmounts
+$result = @eval(@invamount (White Potion)+@cartamount (White Potion))
+$resultHerbs = @eval(@invamount (White Herb)+@cartamount (White Herb))
+if ($result > 0) goto ok 
+if ($resultHerbs >= 2000) goto startMix 
+# call hasAgi
+call move-to-alch
+log Vorm Einkauf
+call logAmounts
+call buy-herbs
+log nach erster Einkaufsrunde
+call logAmounts
+call move-herbs-cart
+log nach cart move
+call logAmounts
+call buy-herbs
+log nach zweiter Einkaufsrunde
+call logAmounts
+# if (@cartamount (White Herb) <= 1000) call move-herbs-cart
+# if (@invamount (White Herb) <= 1000) call buy-herbs
+ :startMix
+call move-to-mix
+# if (@invamount (Empty Bottle) >= 1000) do cart add Empty Bottle 500
+log angekommen beim Mixer
+call talk-to-mix
+log nachm Mixen 1
+call logAmounts
+call wp
+log nachm cart move
+call logAmounts
+call talk-to-mix
+log nachm Mixen 2
+call logAmounts
+ :ok
+call move-to-alch
+# if (@cartamount (White Potion) > 0) call get-potions
+call get-potions
+log vorm Verkauf
+call logAmounts
+call sell-potions-alch
+log nachm Verkauf 1
+call logAmounts
+# if (@cartamount (White Potion) > 0) call get-potions
+call get-potions
+
+# if (@invamount (White Herb) < 1000) call sell-potions-alch
+call sell-potions-alch
+log nachm Verkauf 2
+call logAmounts
+
+log ----------------------------------
+$resultZeit = @eval($.time-$zeitAnfang); $resultZeny = @eval($.zeny-$zenyAnfang)
+log Durchlaufzeit: $resultZeit s -- Umsatz: $resultZeny
+log Anfang: $datumStart -- Ende: $.datetime
+log Anfangsgeld: $zenyAnfang Geldjetzt: $.zeny
+log ----------------------------------
+}
+
+macro buy-herbs {
+    # $amountHerbs = @eval(1000-@invamount (White Herb))
+    # $amountBottles = @eval(500-@invamount (Empty Bottle))
+	# $.maxweight
+	# do talknpc 213 121 b b2,$amountHerbs b7,$amountBottles
+	# do talk @npc(213 121) cancel
+	call checkBuySteps
+}
+
+macro sell-potions-alch {
+	do talknpc 213 121 s
+	call sell-potions
+	do talk @npc(213 121) cancel
+}
+
+macro move-to-alch {
+$hl = @npc(213 121)
+if ($hl < 0) {
+ do c @go yuno
+}
+do move 202 107 yuno
+}
+
+macro move-herbs-cart {
+	do cart add White Herb 1000
+	do cart add Empty Bottle 500
+}
+
+macro move-to-mix {
+	#do c @go alberta
+    do p @go 1
+	pause 0.5
+	do move 160 83 morocc
+	pause 0.5
+	do talknpc 160 97 r2 r2
+	pause 0.5
+	do move 24 29 alberta_in
+}
+
+macro talk-to-mix {
+	do talknpc 16 28 r0 r3 r0 n
+}
+
+macro wp {
+log storing whitepots loop
+ $i = 1
+ $amount = @eval($i*30)
+  $amount2 = @eval($i*15)
+  	if (@invamount (Empty Bottle) >= 1000) {
+	do cart add Empty Bottle 500
+}
+    while (@invamount (White Potion) > 0 || @cartamount (Empty Bottle) != 0 || @cartamount (White Herb) != 0) as loop
+    [
+	if (@invamount (White Herb) < 1000) {
+	do cart get White Herb 50
+	}
+	# do cart add White Potion 25;
+	if (@invamount (Empty Bottle) < 500) {
+	do cart get Empty Bottle 50
+}
+	if (@invamount (White Potion) > 0) {
+	do cart add White Potion 25
+ 	}
+	]
+    $i++
+    end loop
+log storing whitepots end
+}
+
+
+macro get-potions {
+do cart get White Potion
+}
+
+
+macro move-pront {
+$hl = @npc(143 93)
+if ($hl < 0) {
+ do c @go 0
+}
+do move 150 107 prontera
+}
+
+macro move-alb {
+$hl = @npc(38 245)
+if ($hl < 0) {
+ do c @go alberta
+}
+do move 50 240 alberta
+}
+
+macro sell-potions-pront {
+do talknpc 137 97 s 
+call sell-potions
+}
+
+macro sell-potions {
+do sell @inventory(White Potion)
+# pause .1
+do sell done
+}
+
+macro talk-healer {
+do talknpc 143 93 n
+}
+
+macro repeat {
+ $durchlauf = 0
+ $maxDurchlauf = 100
+    while ($durchlauf < $maxDurchlauf) as loop
+    log Durchlauf  $durchlauf von $maxDurchlauf
+	call start-potions
+    $durchlauf++
+    end loop
+	log Ende 
+}
+
+macro hasAgi {
+if (existsInList("$.status", "Increase Agility") == 0) {
+call move-pront
+call talk-healer
+}
+}
+
+sub existsInList {
+  my ($list, $val) = @_;
+  return 0 if ($val eq "");
+  my @array = split / *, */, $list;
+  $val = lc($val);
+  foreach (@array) {
+     s/^\s+//;
+     s/\s+$//;
+     s/\s+/ /g;
+     next if $_ eq "";
+     return 1 if lc eq $val;
+  }
+  return 0;
+}
+
+
+automacro warp {
+   map gef_fild07
+   inventory "Blue Gemstone" > 0
+   call {
+      do ai manual
+      pause 1
+      do move 319 187
+      do sl 27 316 188
+      pause 2
+      do warp 1
+      pause 1
+      do move 316 188
+      do ai on
+   }
+   timeout 20
+}
+
+automacro newChar {
+	#exclusive 0
+	run-once 0
+	priority 2
+	job < 41
+	disabled 1
+	location new_3-1 53 111, new_2-1, new_1-1, new_4-1
+	call {
+		do p @go 0
+		pause 2
+		do p @autoloot 100
+		call addStat
+		do move prontera 156 106
+		pause 2
+		do talknpc 143 93 n
+		pause 3
+		do talknpc 143 97 r2 r2 n
+	}
+}
+
+automacro newChar50 {
+	#exclusive 0
+	run-once 0
+	job < 50
+	priority 3
+	location new_3-1 53 111, new_2-1, new_1-1, new_4-1
+	call {
+		do p @go 0
+		pause 2
+		do p @autoloot 100
+		call addStat
+		do move prontera 156 106
+		pause 2
+		do talknpc 143 93 n
+		pause 3
+		do talknpc 143 97 r2 r2 n
+	}
+}
+
+automacro newChar50Done {
+	#exclusive 0
+	disabled 1
+	run-once 1
+	job == 50
+	priority 3
+	call {
+		do p @go 8
+		pause 2
+		log JOB 50 jo
+	}
+}
+
+automacro newChar41 {
+	#exclusive 0
+	run-once 1
+	job == 41
+	priority 2
+	call {
+		do p @go 15
+		pause 2
+		log JOB 41
+		call addSkillWeight
+		pause 1
+		call addSkillDiscount
+		pause 1
+		call addSkillOC
+		pause 1
+		call addSkillPushCart
+		pause 1
+		do p @autoloot 100
+		call addStat
+		#do move prontera 156 106
+		#pause 2
+		#do talknpc 143 93 n
+		#pause 3
+		#do talknpc 143 97 r2 r2 n
+		log fertig
+	}
+}
+
+automacro newCharJob10 {
+	#exclusive 0
+	run-once 1
+	job == 10
+	priority 1
+	#location new_3-1 53 111, new_2-1, new_1-1, new_4-1
+	call {
+		$durchlauf = 0
+		$maxDurchlauf = 10
+		while ($durchlauf < $maxDurchlauf) as loop
+		do skills add 1
+		$durchlauf++
+		end loop
+		do p @go 0
+		pause 2
+		do move prontera 156 106
+		pause 2
+		do talknpc 143 93 n
+		pause 1
+		do talknpc 143 101 r4 r0 n
+		pause 3
+		do eq 9
+		call addStat
+		pause 1
+		do talknpc 143 97 r2 r2 n
+	}
+}
+
+macro addSkillWeight {
+$wl = 0
+while ($wl < 10) as loop
+do skills add 36
+$wl++
+end loop
+}
+
+macro addSkillDiscount {
+$wl = 0
+while ($wl < 10) as loop
+do skills add 37
+$wl++
+end loop
+}
+
+macro addSkillOC {
+$wl = 0
+while ($wl < 10) as loop
+do skills add 38
+$wl++
+end loop
+}
+
+macro addSkillPushCart {
+$wl = 0
+while ($wl < 10) as loop
+do skills add 39
+$wl++
+end loop
+}
+
+macro addStat {
+$durchlauf = 0
+$maxDurchlauf = 50
+	while ($durchlauf < $maxDurchlauf) as loop
+	do st add str
+	$durchlauf++
+	end loop
+}
+
+automacro sendRose {
+run-once 1
+inventory "Witherless Rose" > 1000
+map gef_fild05
+exclusive 1
+overrideAI 1
+call sendMail
+}
+
+macro sendMail {
+do rodex open
+pause 1
+do rodex write Viro
+pause 1
+do rodex settarget Viro
+pause 1
+do rodex settitle test
+pause 1
+do rodex setbody test
+pause 1
+do rodex setzeny 0
+pause 1
+do rodex add @inventory(Witherless Rose) @invamount(Witherless Rose)
+pause 1
+do rodex send
+pause 1
+do rodex close
+release sendRose
+}
+
+macro sendSelf {
+do rodex open
+pause 1
+do rodex write Good Share
+pause 1
+do rodex settarget Good Share
+pause 1
+do rodex settitle FA-Quiver
+pause 1
+do rodex setbody FA-Quiver
+pause 1
+do rodex setzeny 0
+pause 1
+do rodex add @inventory(Fire Arrow Quiver) 20
+pause 1
+do rodex send
+pause 1
+do rodex close
+}
+
+automacro perfectlyHidden {
+console /Found perfectly hidden Player/
+#Musashi #Lucano
+run-once 1
+call {
+log GM wurde gesehen
+do quit
+}
+timeout 20
+}
+
+automacro gonDun {
+   map gon_dun01
+   run-once 1
+   call {
+	do p @autoloot 1
+	do p @alootid +Dead Branch
+	do p @alootid +Honey
+	do p @alootid +Royal Jelly
+   }
+   timeout 20
+}
+ 
+automacro keinWing {
+console /Du hast weder den Teleport Skill noch ein Fly Wing/
+   run-once 1
+   call {
+do conf route_randomWalk 1
+
+   }
+   timeout 20
+}
+
+automacro mitWing {
+   run-once 1
+      inventory "Fly Wing" > 0
+map gef_fild05
+   call {
+do conf route_randomWalk 0
+   }
+   timeout 20
+}
+
+
+automacro tele {
+console /Skill Teleportation failed: Insufficient SP/
+	overrideAI 1
+	exclusive 1
+	run-once 1
+	sp < 30
+	map gef_fild05
+   call tryWalkOn
+   timeout 30
+}
+
+macro tryWalkOn {
+do conf route_randomWalk 1
+do conf teleportAuto_idle 0
+do eval AI::clear
+release tele
+}
+
+macro tryWalkOff {
+do conf route_randomWalk 0
+do conf teleportAuto_idle 1
+do eval AI::clear
+release  teleA
+}
+
+automacro teleA {
+exclusive 1
+	run-once 1
+	sp > 30
+	map gef_fild05
+   call tryWalkOff
+   timeout 20
+}
+
+automacro creamy {
+   map prt_fild04
+   run-once 1
+   call {
+	do p @autoloot 1
+	do p @alootid +Witherless Rose
+   }
+   timeout 20
+}
+
+automacro wlRose {
+   map gef_fild05
+   run-once 1
+   call {
+	do p @autoloot 1
+	do p @alootid +Witherless Rose
+   }
+   timeout 20
+}
+
+automacro myGeffen {
+    map geffen
+    overrideAI 0
+	exclusive 0
+	status not Blessing
+    call {
+do move geffen 120 80
+#pause 1
+$healer = @npc(/Healer/)
+log meinHealer = $healer
+do talk @npc(/Healer/)
+	}
+	timeout 30
+}
+
+
+
+macro farmeWildRose {
+do conf lockMap gef_fild05
+do conf runFromTarget 0 #This line changes the runFromTarget to 0 in config.txt
+do conf attackUseWeapon 1 #This line changes the attackUseWeapon to 1 in config.txt
+do conf attackCanSnipe 0 #This line changes the attackCanSnipe to 0 in config.txt
+do conf attackCheckLOS 0 #This line changes the attackCheckLOS to 0 in config.txt
+do conf itemsMaxWeight_sellOrStore 88
+do conf statsAddAuto 1
+do conf statsAddAuto_list 80 agi, 90 str
+do conf statsAddAuto_dontUseBonus 1
+do confdo conf statsAdd_over_99 1
+do p @go gef
+pause 1
+do move geffen 120 80
+pause 1
+do talknpc 115 73 r0
+
+log Fertig mit farmeWildRose
+}
+
+automacro QuiverGef {
+	location gef_fild05
+    inventory "Fire Arrow Quiver" < 1
+	timeout 190
+	call {
+	do p @go 0
+	pause 1
+	do move 156 89 prontera
+	pause 1
+	do talknpc 165 91 b b11,10 e
+	pause 1
+	do p @go gef
+	pause 1
+	}
+	timeout 190
+}
+
+macro buyFireQuiver {
+if (@invamount(Fire Arrow Quiver) < 1) {
+	do p @go 0
+	pause 1
+	do move 156 89 prontera
+	pause 1
+	do talknpc 165 91 b b11,10 e
+	pause 1
+	do p @go gef
+	pause 1
+	}
+}

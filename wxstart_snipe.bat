@@ -1,0 +1,1 @@
+.\wxstart.exe --control=control_ok --config=control_ok\config_snipe.txt
