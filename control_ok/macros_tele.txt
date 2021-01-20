@@ -1,0 +1,129 @@
+automacro foundStones {
+timeout 5
+inventory "Stone" > 1
+call {
+	call sendStones -exclusive
+	call clearAI
+	do tele
+	}
+}
+
+automacro teleReactivate {
+timeout 5
+inventory "Rosary [Creamy] [1]" = 1, "Clip [Creamy] [1]" = 1, "Earring [Creamy] [1]" = 1, "Orleans's Glove [Creamy] [1]" = 1
+sp >= 100
+var teleDisabled > 0
+call {
+	call disableWalk -exclusive
+	call clearAI
+}
+}
+
+automacro justTele {
+console /Kann Ziel nicht erreichen/i
+#equipped rightAccessory "Clip [Creamy] [1]" = 1, leftAccessory "Earring [Creamy] [1]" = 1
+inventory "Rosary [Creamy] [1]" = 1, "Clip [Creamy] [1]" = 1, "Earring [Creamy] [1]" = 1, "Orleans's Glove [Creamy] [1]" = 1
+map $myLockMap
+timeout 5
+call {
+	log lastLogMsg: $.lastLogMsg
+	do move stop
+	do warp cancel
+	do tele
+	}
+}
+
+automacro teleFailSP {
+console /Skill Teleportation failed: Insufficient SP/i
+timeout 5
+call {
+	log lastLogMsg: $.lastLogMsg
+	do move stop
+	do warp cancel
+	call enableWalk -exclusive
+	call clearAI
+	}
+}
+
+macro enableWalk {
+	do conf teleportAuto_idle 0
+	do conf teleportAuto_useSkill 0
+	do conf route_randomWalk 1
+	do conf route_teleport 0
+	$teleDisabled = 1
+}
+
+macro disableWalk {
+	do conf teleportAuto_idle 1
+	do conf teleportAuto_useSkill 1
+	do conf route_randomWalk 0
+	do conf route_teleport 1
+	$teleDisabled = 0
+}
+
+automacro dipukul {
+console /Player (.*) \((\d+)\) attacks you.*/i
+call {
+do kill $.lastMatch2
+}
+}
+
+automacro dimagic {
+console /Player (.*) \((\d+)\) uses (.*) on you - Dmg.*/i
+call {
+do kill $.lastMatch2
+}
+}
+
+automacro dicast {
+console /Player (.*) \((\d+)\) is casting (.*) on you.*/i
+#var .lastMatch1 != PutSlaveNameHereRemoveThisLineIfBottingSolo
+call {
+do kill $.lastMatch2
+}
+}
+
+automacro relog_after_kill {
+	hook attack_end
+	timeout 0
+	exclusive 1
+	call {
+	[
+	$currentCount = @eval($::monsters_Killed[0]{count})
+	
+	if ( $currentCount != $lastCount ) goto relog
+	if ( $currentCount == $lastCount ) goto keepgoing
+	
+	:keepgoing
+	$lastCount = @eval ($::monsters_Killed[0]{count})
+	stop
+
+	:relog
+	do relog 3600
+	log @eval (localtime)
+	$lastCount = @eval ($::monsters_Killed[0]{count})
+	stop
+	]
+	}
+}
+
+macro sync {
+	[
+	log Old Current count is : $currentCount
+	log Old Last count is : $lastCount
+	
+	$currentCount = @eval($::monsters_Killed[0]{count})
+	$lastCount = @eval ($::monsters_Killed[0]{count})
+	
+	log New Current count is : $currentCount
+	log New Last count is : $lastCount
+	]
+}
+
+macro expcount {
+[
+	log @eval ($::monsters_Killed[0]{'nameID'} = 1120)
+	log @eval ($::monsters_Killed[0]{'name'} = "Ghostring")
+	log @eval ($::monsters_Killed[0]{'count'} = 0)
+]
+}

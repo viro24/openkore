@@ -1,0 +1,36 @@
+useSelf_skill Loud Exclamation {
+	lvl 1
+	whenStatusInactive Crazy Uproar
+	onAction attack
+}
+
+useSelf_skill Adrenaline Rush {
+	lvl 5
+	whenStatusInactive Adrenaline Rush
+	onAction attack
+}
+
+useSelf_skill Over Thrust {
+	lvl 5
+	whenStatusInactive Over Thrust
+	onAction attack
+}
+
+useSelf_skill Weapon Perfection {
+	lvl 5
+	disabled 1
+	whenStatusInactive Weapon Perfection
+	onAction attack
+}
+
+useSelf_skill Maximize Power {
+	lvl 5
+	whenStatusInactive Maximize Power
+	onAction attack
+}
+attackSkillSlot Cart Revolution {
+	lvl 1
+	sp > 12
+	whenStatusActive On Push Cart
+
+}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="euc-kr" ?>
+<clientinfo>
+	<desc>Ragnarok Online Client Information</desc>
+	<servicetype>korea</servicetype>
+	<servertype>primary</servertype>
+	<connection>
+		<display>PO-Sapphire</display>
+      	<address>localhost</address>
+      	<port>6900</port>
+      	<version>30</version>
+      	<langtype>1</langtype>
+		<registrationweb>https://ebilro.net/flux/?module=account&action=create</registrationweb>
+		<loading>
+			<image>Loading00.bmp</image>
+			<image>Loading01.bmp</image>
+			<image>Loading02.bmp</image>
+			<image>Loading03.bmp</image>
+			<image>Loading04.bmp</image>
+			<image>Loading05.bmp</image>
+		</loading>
+		<yellow>
+			<admin>2000000</admin>
+			<admin>2000001</admin>
+			<admin>2000002</admin>
+			<admin>2000003</admin>
+			<admin>2000004</admin>
+		</yellow>
+   	</connection>
+</clientinfo>

@@ -1,0 +1,100 @@
+automacro busNachricht {
+    BusMsg /(.*)/i
+    delay 5
+    call myBus
+}
+macro myBus {
+	log busNachricht: $.BusMsgLastMsg
+    log This is being logged 5 seconds after the automacro activated
+}
+
+
+
+macro storage_open {
+  [
+  $open = &eval( $::char->storage->isReady ? 1 : 0 )
+  if ($open == 1) stop
+
+  call find_kafra
+
+  if ($kafraidx == -1) stop
+  ]
+
+  do move $kafrapos $kaframap $kafradist
+  do talknpc $kafrapos $kafrastor
+
+  [
+  # Wait up to six seconds for storage to open.
+  $openi = 0
+  while ($openi < 12) {
+    $open = &eval( $::char->storage->isReady ? 1 : 0 )
+    if ($open == 1) stop
+    pause 0.5
+    $openi = @eval($openi + 1)
+  }
+  ]
+}
+
+macro save {
+  [
+  call find_kafra
+
+  if ($kafraidx == -1) stop
+  ]
+
+  do move $kafrapos $kaframap $kafradist
+  do talknpc $kafrapos $kafrasave
+}
+
+macro goto_kafra {
+  call find_kafra
+
+  if ($kafraidx == -1) stop
+
+  do move $kafrapos $kaframap $kafradist
+  #do talknpc $kafrapos $kafrastor
+  #call quest_talk_dist "$kaframap,$kafrapos,$kafradist,$kafrapos,$kafrastor"
+}
+
+sub find_kafra {
+  # The task code is loaded on demand, and might not be loaded yet.
+  require Task::CalcMapRoute;
+
+  my $targets = [];
+  foreach ( 0 .. 200 ) {
+    last if !exists $config{"kafra_$_"};
+    next if $config{"kafra_${_}_disabled"};
+    next if !$config{"kafra_${_}_map"};
+    next if $config{"kafra_${_}_pos"} !~ /^\s*(\d+)\s+(\d+)\s*$/os;
+    push @$targets, { map => $config{"kafra_${_}_map"}, x => $1, y => $2, index => $_ };
+  }
+
+  my $task = Task::CalcMapRoute->new( targets => $targets );
+  $task->activate;
+  foreach ( 1 .. 5 ) {
+    $task->iterate if $task->getStatus < 2;
+  }
+  $task->{target}->{index} || -1;
+}
+
+macro find_kafra {
+  [
+  # Collect a list of all kafras and calculate the closest one.
+  $kafraidx = find_kafra()
+  $kaframap = &config(kafra_$kafraidx_map)
+  $kafrapos = &config(kafra_$kafraidx_pos)
+  $kafrastor = &config(kafra_$kafraidx_storage)
+  $kafrasave = &config(kafra_$kafraidx_save)
+  $kafradist = &config(kafra_$kafraidx_dist)
+
+  if (a$kafrastor == a) {
+    $kafrastor = &config(kafra_defaults_0_storage)
+  }
+  if (a$kafrasave == a) {
+    $kafrasave = &config(kafra_defaults_0_save)
+  }
+  if (a$kafradist == a) {
+    $kafradist = &config(kafra_defaults_0_dist)
+  }
+  ]
+}

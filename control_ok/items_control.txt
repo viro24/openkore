@@ -39,10 +39,34 @@
 
 # All items not mentioned in this file will be automatically stored in storage.
 all 0 1 0
+Orc Archer Bow 0 0 0
 Witherless Rose 0 1 0
 Awakening Potion 0 0 0
+Berserk Potion 0 0 0
+
+Steel Arrow 0 0 0
+Steel Arrow Quiver 0 0 0
+
+Shadow Arrow 0 0 0
+Shadow Arrow Quiver 0 0 0
+
+Immaterial Arrow 0 0 0
+Immaterial Arrow Quiver 0 0 0
+
+Holy Arrow 0 0 0
+Holy Arrow Quiver 0 0 0
+
+Fire Arrow 0 0 0
 Fire Arrow Quiver 0 0 0
-Honey 0 0 0
+
+Stone Arrow 0 0 0
+Stone Arrow Quiver 0 0 0
+
+Crystal Arrow 0 0 0
+Crystal Arrow Quiver 0 0 0
+
+Honey 5 1 0
+Royal Jelly 0 1 0
 
 ##### HEAL/SUPPORT ITEMS #####
 # Adjust these to your needs

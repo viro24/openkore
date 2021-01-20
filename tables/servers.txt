@@ -360,15 +360,37 @@ port 6900
 private 0
 #sendCryptKeys 0x00000000, 0x00000000, 0x00000000
 master_version 1
-version 55
-#version 30
+#version 55
+version 30
 storageEncryptKey 0x00000025,0x0000019F,0x000001EA,0x00000025,0x00000089,0x000001F4,0x0000023F,0x00000025
 recvpackets recvpackets.txt
 serverType kRO_RagexeRE_2018_06_21a
+gameGuard 1
 serverEncoding Western
 charBlockSize 155
 pinCode 1
 addTableFolders kRO/RagexeRE_2018_06_21a;translated/kRO_english;kRO;ebilRO
+
+
+# https://ebilro.net/
+[EbilRO2]
+ip 89.163.132.26
+port 6900
+private 0
+#sendCryptKeys 0x00000000, 0x00000000, 0x00000000
+master_version 1
+#version 55
+version 30
+storageEncryptKey 0x00000025,0x0000019F,0x000001EA,0x00000025,0x00000089,0x000001F4,0x0000023F,0x00000025
+recvpackets recvpackets_e.txt
+serverType kRO_RagexeRE_2018_05_02b
+#serverType kRO_RagexeRE_2018_06_21a
+serverEncoding Western
+charBlockSize 155
+gameGuard 0
+pinCode 0
+addTableFolders kRO/RagexeRE_2018_05_02b;translated/kRO_english;kRO;ebilRO
+
 
 ####################
 # Dead

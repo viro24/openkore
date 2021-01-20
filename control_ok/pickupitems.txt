@@ -12,3 +12,7 @@ all 0
 # jellopy 0
 # fluff 0
 Witherless Rose 1
+Fire Arrow Quiver 1
+Ghostring Card 1
+Angeling Card 1
+Deviling Card 1

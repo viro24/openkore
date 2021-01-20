@@ -1,25 +1,25 @@
-Extreme V1.0 :lol:
-
-Purpose:
-Create a Novice and then simply watch it become Level 99 [Insert a job here] without moving a finger!! [In my Example it's High Wizard]
-I must say that it is extremely useful for making bot armies. Before I had to level each of my bots manually which was a pain in a$$ since my bots were banned frequently.
-
-Use:
-Do not just copy paste it!!! This Macro is written for a High Rate server with a Job Changer, NPC Warp and @go command.
-Use this as a reference and make your own macro that fits your needs!
-
-Minimum Modification:
-1) NPC Locations and Talk Sequences
-2) Job you want
-3) Maps where you want to level
-4) Skills and stats you want to up
-5) Weapon configuration (Melee/Range/Spells)
-6) Levels at which you want the Macro to Trigger
-7) Jobs at which you want Macro to Trigger
-8) Your save location
-9) Desired levels
-
-Explanation of the Macro:
+#Extreme V1.0 :lol:
+#
+#Purpose:
+#Create a Novice and then simply watch it become Level 99 [Insert a job here] without moving a finger!! [In my Example it's High Wizard]
+#I must say that it is extremely useful for making bot armies. Before I had to level each of my bots manually which was a pain in a$$ since my bots were banned frequently.
+#
+#Use:
+#Do not just copy paste it!!! This Macro is written for a High Rate server with a Job Changer, NPC Warp and @go command.
+#Use this as a reference and make your own macro that fits your needs!
+#
+#Minimum Modification:
+#1) NPC Locations and Talk Sequences
+#2) Job you want
+#3) Maps where you want to level
+#4) Skills and stats you want to up
+#5) Weapon configuration (Melee/Range/Spells)
+#6) Levels at which you want the Macro to Trigger
+#7) Jobs at which you want Macro to Trigger
+#8) Your save location
+#9) Desired levels
+#
+#Explanation of the Macro:
 
 #############Step One (1)################
 
@@ -391,3 +391,24 @@ call {
 do stat_add int #Adds one stat point to Int [I made this little Automacro because sometimes bot's auto stat add is stuck]
 }
 }
+
+#Apparently now it will work even with explanation! So now you CAN copy paste it
+#basically it will log your death,
+#the monster who killed you,
+#the map
+#the date and time
+#
+#Note : make a deathlog.txt inside your control folder
+#
+#Code:
+#######################################
+##############LOG ON DEATH#############
+#######################################
+
+automacro LogOnDeath {
+   console /^You have died/i
+   call {
+   do eval open(FILE, ">>", Settings::getControlFilename("deathlog.txt")); print FILE "Killed by $.lastMonster at $.map | $.datetime \n"; close FILE;
+   }
+}
+

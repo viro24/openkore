@@ -3,9 +3,9 @@
 
 ######## Login options and server-specific options ########
 
-master EbilRO
+master 
 server 0
-username weiter
+username
 !include account.txt
 loginPinCode 2580
 char 0
@@ -20,7 +20,7 @@ forceMapIP
 
 # 1 = hook into RO client, 2 = Act as stand-alone proxy, proxy = act as true proxy
 # http://wiki.openkore.com/index.php/XKore
-XKore 3
+XKore 0
 XKore_port 2350
 XKore_dll NetRedirect.dll
 XKore_injectDLL 0
@@ -331,7 +331,7 @@ logEmoticons
 logConsole 1
 logAppendUsername 1
 logAppendServer 0
-monsterLog 0
+monsterLog 1
 logDead 1
 
 questDisplayStyle 2

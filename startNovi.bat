@@ -1,1 +1,0 @@
-.\start.exe --config=control\config_1.txt

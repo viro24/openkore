@@ -59,10 +59,18 @@
 all 0 0 0
 Zipper Bear 2 0 1
 Enchanted Peach Tree 2 0 1
-Bloody Butterfly 0 0 0
+Bloody Butterfly 2 0 1
 Wild Rose 2 0 1
 Pupa 2 0 0
-Creamy 2 0 0
+Creamy 2 0 1
+Obeaune 2 0 0
+Kobold Archer -1 0 0
+Picky 2 0 1
+Angeling 2 0 1
+1582 2 0 1
+Ghostring 2 0 1
+Giant Whisper 0 0 0
+
 
 ##### Eggs #####
 Ant's Egg 0 0 0

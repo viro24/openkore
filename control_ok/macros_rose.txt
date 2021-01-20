@@ -1,0 +1,130 @@
+automacro sendRose {
+run-once 1
+priority 6
+inventory "Witherless Rose" >= 1000
+exclusive 1
+disabled 1
+overrideAI 0
+call sendMail
+}
+
+macro sendMail {
+log Parameter: $.param1
+do ai manual
+#call clearAI
+pause 1
+do rodex cancel
+pause 1
+do rodex open
+pause 1
+do rodex write $myMail
+pause 1
+do rodex settarget $myMail
+pause 1
+do rodex settitle $.datetime
+pause 1
+do rodex setbody Ich habe gesammelt: $gesammelteRoses
+pause 1
+do rodex setzeny 0
+pause 1
+$invRoses = @inventory(Witherless Rose)
+$amRoses = @invamount(Witherless Rose)
+if ($amRoses > 2000) {
+$amRoses = 2000
+}
+log allRoses = RosesItem: $invRoses RosesAmount: $amRoses
+do rodex add $invRoses $amRoses
+pause 2
+if ($amRoses > 2000) {
+$amRoses = @eval(2000-@invamount(Witherless Rose))
+do rodex add $invRoses $amRoses
+pause 1
+}
+if ($amRoses < 50) {
+do macro stop
+}
+do rodex send
+pause 2
+do rodex close
+pause 1
+release sendRose
+# $gesammelteRoses = 0
+do ai on
+if ($.param1 == "exit") {
+do quit
+}
+}
+
+automacro wlRose {
+map gef_fild05
+timeout 60
+run-once 0
+call {
+# do p @autoloot 1
+do p @alootid +Witherless Rose
+#do p @alootid +Feather
+}
+}
+
+automacro increaseRosesCount {
+hook item_gathered
+save item
+save amount
+map gef_fild05
+call {
+# log Item: $.hooksave0  -  Anzahl: $.hooksave1
+if ( $.hooksave0 == "Witherless Rose" ) {
+$gesammelteRoses = @eval( $gesammelteRoses+$.hooksave1 )
+log Gesammelte Roses: $gesammelteRoses
+}
+}
+}
+
+
+automacro equipFireArrow {
+priority 0
+location $myLockMap
+overrideAI 1
+disabled 1
+timeout 120
+call {
+do eq @inventory ($myArrow)
+do conf attackEquip_arrow $myArrow
+}
+}
+
+automacro checkQuivers {
+exclusive 1
+overrideAI 1
+priority 7
+disabled 1
+run-once 0
+timeout 30
+#inventory "Steel Arrow Quiver" < 1
+#inventory "Rusty Arrow Quiver" < 2
+inventory "Holy Arrow Quiver" < 1
+inventory "Shadow Arrow Quiver" < 1
+inventory "Immaterial Arrow Quiver" < 1
+call buyFireQuiver
+}
+
+macro buyFireQuiver {
+pause 2
+#log Anzahl Quivers: @invamount (Fire Arrow Quiver) 
+#if ( @invamount (Fire Arrow Quiver) < 2) {
+#if ( @invamount (Rusty Arrow Quiver) < 2) {
+#if ( @invamount (Steel Arrow Quiver) < 2) {
+#do ai manual
+do p @go 0
+pause 3
+do move 156 89 prontera
+pause 3
+#do talknpc 165 91 b b6,8 n #rusty
+#do talknpc 165 91 b b11,8 n #fire
+#do talknpc 165 91 b b2,8 n #steel
+pause 2
+do p @go $goMap
+#do ai auto
+release checkQuivers
+#}
+}

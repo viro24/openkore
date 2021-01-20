@@ -1,0 +1,165 @@
+
+automacro newChar {
+	run-once 0
+	priority 2
+	job < 41
+	disabled 1
+	location new_3-1 53 111, new_2-1, new_1-1, new_4-1
+	call {
+		do p @go 0
+		pause 2
+		do p @autoloot 100
+		call addStat
+		do move prontera 156 106
+		pause 2
+		do talknpc 143 93 n
+		pause 3
+		do talknpc 143 97 r2 r2 n
+	}
+}
+
+automacro newChar50 {
+	run-once 0
+	job < 50
+	priority 3
+	location new_3-1 53 111, new_2-1, new_1-1, new_4-1
+	call {
+		do p @go 0
+		pause 2
+		do p @autoloot 100
+		call addStat
+		do move prontera 156 106
+		pause 2
+		do talknpc 143 93 n
+		pause 3
+		do talknpc 143 97 r2 r2 n
+	}
+}
+
+automacro newChar50Done {
+	disabled 1
+	run-once 1
+	job == 50
+	priority 3
+	call {
+		do p @go 8
+		pause 2
+		log JOB 50 jo
+	}
+}
+
+automacro newChar41 {
+	#exclusive 0
+	run-once 1
+	job == 41
+	priority 2
+	call {
+		do p @go 15
+		pause 2
+		log JOB 41
+		call addSkillWeight
+		pause 1
+		call addSkillDiscount
+		pause 1
+		call addSkillOC
+		pause 1
+		call addSkillPushCart
+		pause 1
+		do p @autoloot 100
+		call addStat
+		#do move prontera 156 106
+		#pause 2
+		#do talknpc 143 93 n
+		#pause 3
+		#do talknpc 143 97 r2 r2 n
+		log fertig
+	}
+}
+
+automacro newCharJob10 {
+	#exclusive 0
+	run-once 1
+	job == 10
+	priority 1
+	#location new_3-1 53 111, new_2-1, new_1-1, new_4-1
+	call {
+		$durchlauf = 0
+		$maxDurchlauf = 10
+		while ($durchlauf < $maxDurchlauf) as loop
+		do skills add 1
+		$durchlauf++
+		end loop
+		do p @go 0
+		pause 2
+		do move prontera 156 106
+		pause 2
+		do talknpc 143 93 n
+		pause 1
+		do talknpc 143 101 r4 r0 n
+		pause 3
+		do eq 9
+		call addStat
+		pause 1
+		do talknpc 143 97 r2 r2 n
+	}
+}
+
+macro addSkillWeight {
+$wl = 0
+while ($wl < 10) as loop
+do skills add 36
+$wl++
+end loop
+}
+
+macro addSkillDiscount {
+$wl = 0
+while ($wl < 10) as loop
+do skills add 37
+$wl++
+end loop
+}
+
+macro addSkillOC {
+$wl = 0
+while ($wl < 10) as loop
+do skills add 38
+$wl++
+end loop
+}
+
+macro addSkillPushCart {
+$wl = 0
+while ($wl < 10) as loop
+do skills add 39
+$wl++
+end loop
+}
+
+macro addStat {
+$durchlauf = 0
+$maxDurchlauf = 50
+	while ($durchlauf < $maxDurchlauf) as loop
+	do st add str
+	$durchlauf++
+	end loop
+}
+
+macro farmeWildRose {
+do conf lockMap gef_fild05
+do conf runFromTarget 0 #This line changes the runFromTarget to 0 in config.txt
+do conf attackUseWeapon 1 #This line changes the attackUseWeapon to 1 in config.txt
+do conf attackCanSnipe 0 #This line changes the attackCanSnipe to 0 in config.txt
+do conf attackCheckLOS 0 #This line changes the attackCheckLOS to 0 in config.txt
+do conf itemsMaxWeight_sellOrStore 88
+do conf statsAddAuto 1
+do conf statsAddAuto_list 80 agi, 90 str
+do conf statsAddAuto_dontUseBonus 1
+do confdo conf statsAdd_over_99 1
+do p @go gef
+pause 1
+do move geffen 120 80
+pause 1
+do talknpc 115 73 r0
+log Fertig mit farmeWildRose
+}

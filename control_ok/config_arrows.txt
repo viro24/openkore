@@ -1,0 +1,230 @@
+macro_orphans reregister
+dcOnEmptyArrow 1
+attackCanSnipe 1
+attackCheckLOS 0
+attackLooters 1
+
+useSelf_item Fire Arrow Quiver {
+	inInventory Fire Arrow < 100
+	inLockOnly 1
+}
+
+useSelf_item Shadow Arrow Quiver {
+	inInventory Shadow Arrow < 100
+	inLockOnly 1
+}
+
+useSelf_item Holy Arrow Quiver {
+	inInventory Holy Arrow < 100
+	inLockOnly 1
+}
+
+useSelf_item Immaterial Arrow Quiver {
+	inInventory Immaterial Arrow < 100
+	inLockOnly 1
+}
+
+useSelf_item Steel Arrow Quiver {
+	inInventory Steel Arrow < 100
+	inLockOnly 1
+}
+
+useSelf_item Crystal Arrow Quiver {
+	inInventory Crystal Arrow < 100
+	inLockOnly 1
+}
+
+useSelf_item Stone Arrow Quiver {
+	inInventory Stone Arrow < 100
+	inLockOnly 1
+}
+
+equipAuto Fire Arrow {
+	arrow Fire Arrow
+	inInventory Fire Arrow > 10
+	#monsters Wild Rose
+	inLockOnly 1
+	disabled 1
+}
+
+equipAuto Steel Arrow {
+	arrow Steel Arrow
+	inInventory Steel Arrow > 10
+	#monsters Wild Rose
+	inLockOnly 1
+	disabled 1
+}
+
+useSelf_item Rusty Arrow Quiver {
+	inInventory Rusty Arrow < 100
+	inLockOnly 1
+	disabled 1
+}
+
+equipAuto Rusty Arrow {
+	arrow Rusty Arrow
+	inInventory Rusty Arrow > 10
+	#monsters Wild Rose
+	inLockOnly 1
+	disabled 1
+}
+
+useSelf_item Wind Arrow Quiver {
+	inInventory Wind Arrow < 100
+	inLockOnly 1
+}
+
+equipAuto Wind Arrow {
+	inInventory Wind Arrow > 1
+	arrow Wind Arrow
+	monsters Obeaune
+	inLockOnly 1
+	disabled 1
+}
+
+attackSkillSlot Double Strafing {
+	lvl 10
+	sp >= 40
+	inLockOnly 1
+	whenStatusInactive EFST_POSTDELAY, Action Delay
+	onAction attack
+	equip_arrow Fire Arrow
+	inInventory Fire Arrow > 1
+	monsters Wild Rose, Kobold Archer, 1101, Obeaune, Creamy, Enchanted Peach Tree
+#	notMonsters Kobold Archer, Wild Rose
+}
+attackSkillSlot Double Strafing {
+	lvl 10
+	sp >= 40
+	whenStatusInactive EFST_POSTDELAY, Action Delay
+	equip_arrow Stone Arrow
+	monsters Bloody Butterfly
+}
+attackSkillSlot Double Strafing {
+	lvl 10
+	sp >= 40
+	inLockOnly 1
+	onAction attack
+	whenStatusInactive EFST_POSTDELAY, Action Delay
+	equip_arrow Steel Arrow
+	inInventory Steel Arrow > 1
+	monsters Wild Rose, Kobold Archer, 1101, Obeaune, Creamy, Enchanted Peach Tree, Zipper Bear, Bloody Butterfly
+#	notMonsters Kobold Archer, Wild Rose
+}
+
+
+
+attackSkillSlot Double Strafing {
+	lvl 10
+	sp >= 40
+	whenStatusInactive EFST_POSTDELAY, Action Delay
+	equip_arrow Fire Arrow
+	monsters Enchanted Peach Tree, Zipper Bear, Bloody Butterfly
+}
+
+attackSkillSlot Double Strafing {
+	lvl 10
+	sp >= 40
+	whenStatusInactive EFST_POSTDELAY, Action Delay
+	equip_arrow Shadow Arrow
+	monsters Angeling
+}
+
+
+attackSkillSlot Double Strafing {
+	lvl 10
+	sp >= 40
+	whenStatusInactive EFST_POSTDELAY, Action Delay
+	equip_arrow Holy Arrow
+	monsters Deviling
+}
+
+attackSkillSlot Double Strafing {
+	lvl 10
+	sp >= 40
+	whenStatusInactive EFST_POSTDELAY, Action Delay
+	equip_arrow Immaterial Arrow
+	monsters Ghostring
+}
+
+attackSkillSlot ArrowShower {
+   lvl 7
+   sp >= 40
+   monsters Ghostring, Giant Whisper
+   equip_arrow Immaterial Arrow
+   target_whenStatusActive EFST_INVISIBILITY,EFST_INVISIBLE
+}
+
+useSelf_skill Attention Concentrate {
+	lvl 10
+	sp > 70
+	whenStatusInactive Attention Concentrate
+	onAction attack
+}
+
+useSelf_skill True Sight {
+	lvl 10
+	sp > 40
+	whenStatusInactive True Sight
+	notMonsters Kobold Archer, Wild Rose
+	stopWhenHit 0
+	inLockOnly 1
+	notWhileSitting 1
+	notInTown 1
+	timeout 0
+	disabled 1
+}
+
+useSelf_skill Wind Walk {
+	lvl 10
+	sp > 100
+	whenStatusInactive Wind Walk
+	notMonsters Kobold Archer, Wild Rose
+	stopWhenHit 0
+	inLockOnly 0
+	notWhileSitting 0
+	notInTown 0
+	timeout 0
+	disabled 1
+}
+
+useSelf_item Berserk Potion, Awakening Potion, Concentration Potion {
+	whenStatusInactive Berserk Potion, Awakening Potion, Concentration Potion
+	timeout 10
+	inLockOnly 1
+}
+
+buyAuto Fire Arrow Quiver {
+	npc prontera 165 91
+	npc_steps b
+	standpoint
+	distance 5
+	minAmount 1
+	maxAmount 10
+	disabled 1
+}
+buyAuto Steel Arrow Quiver {
+	npc prontera 165 91
+	npc_steps b
+	standpoint
+	distance 5
+	minAmount 1
+	maxAmount 10
+	disabled 0
+}
+
+autoSwitch Angeling {
+	arrow Shadow Arrow
+}
+autoSwitch Deviling {
+	arrow Holy Arrow
+}
+
+autoSwitch Ghostring {
+	arrow Immaterial Arrow
+}
+
+autoSwitch Giant Whisper {
+	arrow Immaterial Arrow
+
+}

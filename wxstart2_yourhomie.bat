@@ -1,0 +1,1 @@
+.\wxstart2.exe --control=control_ok --config=control_ok\config_yourhomie.txt --interface=Wx

@@ -1,0 +1,412 @@
+!include macros_rose.txt
+!include macros_tele.txt
+
+automacro init {
+priority 0
+exclusive 1
+overrideAI 1
+run-once 1
+console /Welcome to rAthena! Enjoy! Please report any bugs you find./
+set gesammelteRoses 0
+set myArrow Fire Arrow
+set myMail Piccolo
+set relogTimer 60900
+set goMap 0
+call {
+	do ai manual
+	call clearAI
+	$charname = @eval ($::char->{'name'}) 
+	$gesammelteRoses = @invamount(Witherless Rose)
+	#call buyFireQuiver -exclusive
+	$playerLog = 1
+	do eq @inventory ($myArrow)
+	#do conf attackEquip_arrow $myArrow
+	#$gesammelteRoses = 0
+	#$myLockMap = gef_fild05 # Wild Rose
+	#$myArrow = Fire Arrow
+	#$myMail = Alleswisser
+	#$goMap = gef
+	#$myLockMap = iz_dun02 #Obeaune
+	#call disableWalk -exclusive
+	
+	call myAutoloot
+	
+	if (($charname == "Piccolol")) {
+	$playerLog = 0
+	$myLockMap = gef_fild05
+	$myArrow = Fire Arrow
+	call enableWalk -exclusive
+	}
+	
+	if ($charname == "Piccolo") {
+	$playerLog = 1
+	do p @autoloot 1
+	$myLockMap = pay_fild04
+	do conf lockMap $myLockMap
+	$myArrow = Holy Arrow
+	}
+
+
+	if ($myLockMap == "gef_fild05") {
+	do conf storageAuto_npc geffen 115 73
+	do conf saveMap_warpChatCommand @go gef
+	do conf saveMap geffen
+	}
+
+
+	if ($myLockMap == "gon_dun01") {
+	do conf storageAuto_npc gonryun 159 122
+	do conf saveMap_warpChatCommand @go 11
+	do conf saveMap gonryun
+	}
+	
+	
+	
+	
+	do conf lockMap $myLockMap
+	call logStatus -exclusive
+	if ($.map != $.map) {
+	#do p @go $goMap
+	} 
+	call expcount
+	call sync
+	log geht los in 3...
+	pause 1
+	log 2...
+	pause 1
+	log 1...
+	pause 1
+	log GO!
+	do ai auto
+	}
+}
+
+automacro DisconnectedMaoServer {
+#console /Verbindung zum Map Server unterbrochen/
+console /You're now in the '#global' channel/
+exclusive 1
+call myAutoloot
+}
+
+macro myAutoloot {
+	do p @autoloot 1
+	$alootList = Witherless Rose,Feather
+	do p @alootid +Witherless Rose
+	do p @alootid +dead branch
+	do p @alootid +honey
+	do p @alootid +royal jelly
+	do p @alootid +old blue box
+	}
+
+automacro setupLoot {
+map $myLockMap
+timeout 300
+call {
+	do p @alootid +Witherless Rose
+	#do p @alootid +Feather
+	do p @alootid +Steel Arrow
+	do p @alootid +honey
+	do p @alootid +royal jelly
+		if ($charname == "Piccolo") {
+		do p @autoloot 1
+		}
+	}
+}
+
+macro changeMap {
+# macro changeMap -- gef_fild05 now
+# macro changeMap -- gon_dun01 now
+# macro changeMap -- pay_fild04 now
+$myLockMap = $.param1
+do conf lockMap $myLockMap
+if ($myLockMap == "gef_fild05") {
+	$goMap = gef
+	do conf storageAuto_npc geffen 115 73
+	do conf saveMap_warpChatCommand @go gef
+	do conf saveMap geffen
+	do conf getAuto_0_maxAmount 25
+	do conf getAuto_0_passive 0	
+	do conf storageAuto 1
+	do conf itemsMaxWeight_sellOrStore 49
+}
+
+if ($myLockMap == "gon_dun01") {
+	$goMap = gon
+	do conf storageAuto_npc gonryun 159 122
+	do conf saveMap_warpChatCommand @go 11
+	do conf saveMap gonryun
+	do conf getAuto_0_maxAmount 0
+	do conf getAuto_0_passive 1
+	do conf storageAuto 1
+	do conf itemsMaxWeight_sellOrStore 79
+}
+	
+if ($myLockMap == "pay_fild04") {
+	$goMap = pron
+	do conf storageAuto_npc prontera 143 89
+	do conf saveMap_warpChatCommand @go 0
+	do conf saveMap prontera
+	do conf getAuto_0_maxAmount 40
+	do conf getAuto_0_passive 1
+	do conf itemsMaxWeight_sellOrStore 49
+	do conf storageAuto 1
+	do p @autoloot 1
+}
+	
+do p @alootid +honey
+do p @alootid +royal jelly
+do p @alootid +witherless rose
+
+if ($.param2 == "now") {
+	do p @go $goMap
+	do autostorage
+}
+}
+
+automacro talkHealer {
+#overrideAI 0
+#exclusive 1
+priority 3
+console /Healer#/
+status not Blessing
+call talkToHealer
+timeout 30
+}
+automacro storeit{
+#overrideAI 0
+#exclusive 1
+priority 3
+disabled 1
+status not Blessing
+call {
+do autostorage
+}
+timeout 6000
+}
+
+macro talkToHealer {
+pause 1
+$healer = @npc(/Healer/)
+log meinHealer = $healer in $.map 
+do talk $healer
+pause 1
+#do ai auto
+}
+
+automacro healNoblessing {
+#location not $myLockMap
+#exclusive 1
+#priority 3
+#overrideAI 0
+run-once 1
+weight >= 49%
+sp < 10
+timeout 600
+status not Blessing
+call gefHeal
+}
+
+automacro healNoblessingLow {
+#location not $myLockMap
+disabled 1
+exclusive 1
+priority 3
+base < 200
+timeout 1200
+status not Blessing
+call gefHeal
+}
+
+macro gefHeal {
+#do ai manual
+do p @go gef
+pause 2
+do move geffen 120 80
+pause 5
+call talkToHealer
+release healNoblessing
+}
+
+macro clearAI {
+do eval AI::clear("move", "map", "route", "mapRoute", "skill", "teleport", "attack", "checkMonsters", "skill_use")
+}
+
+automacro logPlayers {
+player /(.*)/i
+var playerLog > 0
+timeout 20
+run-once 0
+call {
+	$friendlyPlayers = Machmal,Lexxus,Fusy,Telaviv,Coaly,Painaldin,Blanka
+	$gms = Musashi,Lucano,Erukano,EruStealthpatrol,BotHunter
+	$playerID = @player($.lastMatch1)
+	if (existsInList("$gms", "$.lastMatch1") == 1 && $.map != "prontera") {
+		log -------------$.lastMatch1-----------------
+		do bus all quit
+		do quit
+	}
+	if (existsInList("$friendlyPlayers", "$.lastMatch1") == 0) {
+		log -------------$.lastMatch1-----------------
+		# do pl $playerID
+	}
+	$killPlayers = Ghosthunter,Yuffi,Spargel,Snie,Iewz,Forp,Kresse,Gypsya,Raiicoon
+	if (existsInList("$killPlayers", "$.lastMatch1") == 1) {
+		log Killing player: $playerID
+		do kill $playerID
+	}
+	$lastLoggedPlayer = $.lastMatch1
+	release logPlayers
+	}
+}
+
+automacro perfectlyHidden {
+console /Found perfectly hidden Player/
+#Musashi #Lucano #Erukano
+exclusive 1
+overrideAI 1
+call {
+	log GM wurde gesehen
+	if ( $.map == $myLockMap  || $.map != "prontera" ) {
+		do ai manual
+		do p @go 0
+		pause 1
+		call randomPront
+		#do bus all quit
+		#do quit
+		}
+	}
+}
+
+macro randomPront {
+	do move @random ("146 90 prontera", "147 91 prontera", "145 89 prontera", "144 92 prontera", "143 86 prontera")
+}
+macro logStatus {
+	log status: $.status gesammelteRoses: $gesammelteRoses myLockMap: $myLockMap myArrow: $myArrow, myMail: $myMail, goMap: $goMap, myLockMap: $myLockMap, teleDisabled: $teleDisabled
+}
+
+macro sendAndExit {
+	do bus all macro sendMail -exclusive -- exit
+	call sendMail -exclusive -- exit
+	pause 20
+}
+
+sub LogFile {
+	open(FILE, ">:utf8", "$Settings::logs_folder/info_$::char->{'name'}.txt");
+	print FILE $_[0];
+	close(FILE);
+}
+
+sub existsInList {
+	my ($list, $val) = @_;
+	return 0 if ($val eq "");
+	my @array = split / *, */, $list;
+	$val = lc($val);
+	foreach (@array) {
+		s/^\s+//;
+		s/\s+$//;
+		s/\s+/ /g;
+		next if $_ eq "";
+		return 1 if lc eq $val;
+	}
+	return 0;
+}
+
+automacro sts {
+	set charname = @eval ($::char->{'name'})
+	notMonster Ghostring, Deviling, Angeling
+	call stats
+	timeout 600
+}
+
+macro stats {
+	$charname = @eval ($::char->{'name'})
+	LogFile ("[$.datetime] \n Name: $charname \n BLevel: $.lvl \n JLevel: $.joblvl \n Current HP: $.hp \n Current SP: $.sp \n Zeny: $.zeny \n Weight/Max: $.weight/$.maxweight \n Map: $.map \n Current Status: $.status \n Roses: $gesammelteRoses")
+	$firstLogin = 0
+	#if (($charname != "DollHouse") || (@config (lockMap) != gef_fild05) || ($charname != "Dingsda")) {
+	if (($charname == "YoHomie") && (@config (lockMap) != gef_fild05)) {
+	do relog 300
+	release init
+	}	
+}
+
+macro resetRelog {
+	lock sts
+	release sts
+}
+
+automacro attackMonsters {
+monster Ghostring
+timeout 5
+call {
+	do eval Utils::Win32::playSound('E:\Games\openkore\critical.wav')
+	if ($.lastMonster == Ghostring) {
+		do sm 47 @monster(Ghostring)
+		}
+	call resetRelog
+	}
+}
+
+automacro logMonsters {
+monster Ghostring, Deviling, Angeling
+timeout 30
+call {
+	$monsterlog = [$.datetime]: $.lastMonster, $.lastMonsterPos\n
+	do eval Utils::Win32::playSound('E:\Games\openkore\critical.wav')
+	if ($.lastMonster == Ghostring) {
+	do sm 47 @monster(Ghostring)
+	}
+	call resetRelog
+	#do pm Raiicoon $monsterlog
+	call appendLog
+	}
+}
+
+macro appendLog {
+	$file = "$::Settings::logs_folder/monsterlog.txt";
+	#do eval open FILE, ">>:utf8", $file; print FILE "insert entry here\n"; close FILE;
+		if ($.param1 != "") {
+		$monsterlog = $.param1	
+		}
+	do eval open FILE, ">>:utf8", $file; print FILE "$monsterlog"; close FILE;
+}
+
+
+macro sendSelf {
+do rodex open
+pause 1
+do rodex write Good Share
+pause 1
+do rodex settarget Good Share
+pause 1
+do rodex settitle FA-Quiver
+pause 1
+do rodex setbody FA-Quiver
+pause 1
+do rodex setzeny 0
+pause 1
+do rodex add @inventory(Fire Arrow Quiver) 20
+pause 1
+do rodex send
+pause 1
+do rodex close
+}
+
+macro sendStones {
+do rodex open
+pause 1
+do rodex write Erukanu
+pause 1
+do rodex settarget Erukanu
+pause 1
+do rodex settitle thanks
+pause 1
+do rodex setbody hehe
+pause 1
+do rodex setzeny 0
+pause 1
+do rodex add @inventory(Stone) @invamount(Stone)
+pause 1
+do rodex send
+pause 1
+do rodex close
+}
